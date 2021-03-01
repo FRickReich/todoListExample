@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <form class="addEntry">
+        <input type="text" name="add" />
+    </form>
+
+    <ul class="entries">
+    </ul>
+
+
+    <script src="./todo.js"></script>
+    <script>
+        const todoList = new Todo();
+        const addEntry = document.querySelector(".addEntry");
+        const entries = document.querySelector(".entries");
+
+        todoList.addEntry(0, "Dies ist ein todo");
+        todoList.addEntry(1, "Dies ist noch ein todo");
+        todoList.addEntry(2, "Dies ist die 3. todo");
+        todoList.addEntry(3, "Kaufe Käsekuchen");
+
+        const generateId = () => Math.random().toString(36).substr(2, 9);
+
+        const newEntry = (entry) =>
+        {
+            const template = `
+                <li>
+                    <button class="check" onclick="deleteEntry()">✔</button>
+                    ${entry.description}
+                    <button class="delete">✖</button>
+                </li>
+            `;
+
+            entries.innerHTML += template;
+        }
+
+        const recreateEntries = () =>
+        {
+            todoList.getAllEntries().forEach(entry => 
+            {
+                newEntry(entry);
+            });
+        }
+
+        const deleteEntry = (id) =>
+        {
+            console.log(id);
+        }
+
+        addEntry.addEventListener("submit", (e) =>
+        {
+            e.preventDefault();
+
+            const entry = addEntry.add.value.trim();
+
+            if(entry.length)
+            {
+                newEntry(todoList.addEntry(generateId(), entry));
+
+                addEntry.reset();
+            }
+        });
+        
+        (recreateEntries());
+
+    </script>
+    
+</body>
+</html>
